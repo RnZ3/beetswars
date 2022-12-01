@@ -6,6 +6,11 @@ import NavBar from "components/NavBar";
 import Heading from "components/Heading";
 import Footer from "components/Footer";
 import { MyGlobalContext } from "contexts/GlobalContext";
+import { WagmiConfig } from 'wagmi'
+import { client } from './wagmiconf'
+import { ConnectKitProvider, getDefaultClient } from "connectkit";
+
+
 
 function App() {
   const [bribeFile, setBribeFile] = useState<string>("bribe-data-latest.json");
@@ -27,6 +32,23 @@ function App() {
           setGProposal,
         }}
       >
+
+    <WagmiConfig client={client}>
+
+
+
+      <ConnectKitProvider
+theme="minimal" 
+        options={{
+          hideTooltips:true,
+          hideQuestionMarkCTA:true,
+          hideNoWalletCTA:true,
+          disclaimer: "disclaimer here",
+        }}
+      >
+
+
+
         <ThemeProvider>
           <CssBaseline />
           <NavBar />
@@ -34,6 +56,14 @@ function App() {
           <PageContent />
           <Footer />
         </ThemeProvider>
+
+      </ConnectKitProvider>
+
+    </WagmiConfig>
+
+
+
+
       </MyGlobalContext.Provider>
     </div>
   );

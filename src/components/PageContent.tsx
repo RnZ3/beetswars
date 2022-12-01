@@ -13,8 +13,14 @@ import { BribeFiles } from "types/Dashboard";
 import MyBackdrop from 'components/MyBackdrop';
 import Chart1 from "components/Chart1";
 import { useGlobalContext } from "contexts/GlobalContext";
+import { useAccount } from "wagmi";
+
 
 const PageContent: FC = () => {
+
+  const { address } = useAccount();
+
+  console.log(address)
 
   const {bribeFile, setBribeFile, showChart, setShowChart, setGVersion, setGProposal} = useGlobalContext()
   const [tableCards, changeTableCards] = useState(true)

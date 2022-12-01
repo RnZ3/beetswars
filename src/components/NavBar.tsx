@@ -3,6 +3,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
+import { ConnectKitButton, getDefaultClient } from "connectkit";
+import { ConnectButton } from "components/ConnectButton"
+
+
 
 const NavBar: FC = () => {
   const { showChart, setShowChart, gProposal, gVersion } = useGlobalContext();
@@ -81,6 +85,10 @@ const NavBar: FC = () => {
           textDecoration: "none",
         }}
       >
+        <div style={{ marginRight: "50px" }}>
+        <ConnectButton/>
+        </div>
+
         <div style={{ marginRight: "9px" }}>
           <button onClick={() => setShowChart(!showChart)}>
             {showChart ? "Dashboard ("+gVersion+")" : "Stats"}

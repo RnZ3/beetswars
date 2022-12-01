@@ -14,8 +14,16 @@ import { BPT_ACT_QUERY } from "hooks/queries";
 import { contract_abi, contract_address } from "contracts/priceoracleconfig";
 import { ethers } from "ethers";
 import useTimer from "hooks/useTimer";
+import { useAccount } from "wagmi";
+
 
 const useGetData = (bribeFile: string) => {
+
+  const { address } = useAccount();
+
+console.log(address)
+
+
   const dataUrl = process.env.REACT_APP_BRIBE_DATA_URL + bribeFile;
   const historyUrl =
     "https://api.github.com/repos/mobiusTripper-crypto/beetswars-data/git/trees/main";
