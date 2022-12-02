@@ -85,15 +85,15 @@ const NavBar: FC = () => {
           textDecoration: "none",
         }}
       >
-        <div style={{ marginRight: "50px" }}>
-        <ConnectButton/>
-        </div>
-
         <div style={{ marginRight: "9px" }}>
           <button onClick={() => setShowChart(!showChart)}>
             {showChart ? "Dashboard ("+gVersion+")" : "Stats"}
           </button>
         </div>
+        <div style={{ marginRight: "9px" }}>
+        <ConnectButton/>
+        </div>
+
       </Box>
     </>
   );

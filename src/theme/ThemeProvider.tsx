@@ -1,4 +1,5 @@
 import React, { FC, useState, createContext, useContext } from "react";
+import { PropsWithChildren } from 'react';
 import {
   ThemeOptions,
   createTheme,
@@ -95,7 +96,7 @@ let darkTheme = createTheme(deepmerge(baseThemeOptions, darkThemeOptions));
 lightTheme = responsiveFontSizes(lightTheme);
 darkTheme = responsiveFontSizes(darkTheme);
 
-const ThemeProvider: FC = ({ children }) => {
+const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isDarkMode, toggleTheme1] = useState(true);
   const appliedTheme = isDarkMode ? darkTheme : lightTheme;
 

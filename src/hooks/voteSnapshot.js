@@ -80,10 +80,12 @@ export async function getResults(snapshotId) {
     proposal.strategies
   );
   const votingResults = {
-    resultsByVoteBalance: votingClass.resultsByVoteBalance(),
-    resultsByStrategyScore: votingClass.resultsByStrategyScore(),
-    sumOfResultsBalance: votingClass.sumOfResultsBalance(),
+    resultsByVoteBalance: votingClass.getScores(),
+    sumOfResultsBalance: votingClass.getScoresTotal(),
   };
+
+
+console.log(votingClass)
 
   return { proposal, votingResults };
 }
