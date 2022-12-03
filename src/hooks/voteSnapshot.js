@@ -6,6 +6,10 @@ import lodash from "lodash";
 import snapshot from "@snapshot-labs/snapshot.js";
 
 const endpoint = "https://hub.snapshot.org/graphql";
+const network = "250";
+const space = "beets.eth";
+
+const testaddress = "0xc677e71b02adc94534de993a907352f748d21143";
 
 async function getProposal(id) {
   try {
@@ -44,7 +48,7 @@ async function getProposalVotes(
   }
 }
 
-export async function getResults(snapshotId) {
+export async function getResults(snapshotId, address) {
   const proposal = await getProposal(snapshotId);
 
   //console.log(new Date(proposal.created * 1000),proposal.snapshot)
@@ -87,7 +91,25 @@ export async function getResults(snapshotId) {
     sumOfResultsBalance: votingClass.getScoresTotal(),
   };
 
+  //console.log(proposal)
+
   return { proposal, votingResults };
+}
+
+export async function getVotingPower(proposal, address) {
+  const prosl = await getProposal(proposal);
+
+  const votingPower = await snapshot.utils.getVp(
+    address,
+    network,
+    prosl.strategies,
+    prosl.snapshot,
+    space
+  );
+
+  console.log(votingPower, votingPower.vp_by_strategy[1]);
+
+  return votingPower.vp_by_strategy[1];
 }
 
 export default getProposal;

@@ -14,10 +14,15 @@ import { BPT_ACT_QUERY } from "hooks/queries";
 import { contract_abi, contract_address } from "contracts/priceoracleconfig";
 import { ethers } from "ethers";
 import useTimer from "hooks/useTimer";
+import { useAccount } from 'wagmi'
 
 const useGetData = (requestedRound: string) => {
   const baseUrl = "https://beetswars-backend.cyclic.app/api/v1/bribedata/";
   const dataUrl = baseUrl + requestedRound;
+
+  const { address, isConnecting, isDisconnected } = useAccount()
+  console.log(  address, isConnecting, isDisconnected )
+
   const [voteActive, setActive] = useState(false);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
   const refresh = useTimer(refreshInterval);
@@ -51,7 +56,7 @@ const useGetData = (requestedRound: string) => {
           return response;
         });
 
-      const voteData = await getResults(bribeData.snapshot).then(
+      const voteData = await getResults(bribeData.snapshot,address).then(
         (response: VoteDataType) => {
           //console.log("return vote");
           return response;

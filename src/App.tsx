@@ -6,6 +6,10 @@ import NavBar from "components/NavBar";
 import Heading from "components/Heading";
 import Footer from "components/Footer";
 import { MyGlobalContext } from "contexts/GlobalContext";
+import { WagmiConfig } from "wagmi";
+import { client, chains } from "utils/wagmiconf";
+import "@rainbow-me/rainbowkit/styles.css";
+import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 
 function App() {
   const [requestedRound, requestRound] = useState<string>("latest");
@@ -27,13 +31,21 @@ function App() {
           setGProposal,
         }}
       >
-        <ThemeProvider>
-          <CssBaseline />
-          <NavBar />
-          <Heading />
-          <PageContent />
-          <Footer />
-        </ThemeProvider>
+        <WagmiConfig client={client}>
+          <RainbowKitProvider
+            chains={chains}
+            modalSize="compact"
+            theme={darkTheme()}
+          >
+            <ThemeProvider>
+              <CssBaseline />
+              <NavBar />
+              <Heading />
+              <PageContent />
+              <Footer />
+            </ThemeProvider>
+          </RainbowKitProvider>
+        </WagmiConfig>
       </MyGlobalContext.Provider>
     </div>
   );
