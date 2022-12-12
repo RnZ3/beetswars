@@ -43,13 +43,13 @@ const Chart1 = React.memo(() => {
   //  console.log(chartData);
 
   const rounds = chartData?.chartdata.map((round) => {
-    return "Round " + round.round;
+    return "Round " + (parseFloat(round.round)).toFixed(0);
   });
   const bribedVotes = chartData?.chartdata.map((round) => {
     return round.bribedVotes;
   });
   const bribedVotesRatio = chartData?.chartdata.map((round) => {
-    return ((round.bribedVotes / round.totalVotes) * 100).toFixed(2);
+    return ((round.bribedVotes / round.totalVotes) * 100).toFixed(1);
   });
   const totalVotes = chartData?.chartdata.map((round) => {
     return round.totalVotes;
@@ -58,10 +58,17 @@ const Chart1 = React.memo(() => {
     return round.totalVoter;
   });
   const totalBribes = chartData?.chartdata.map((round) => {
-    return round.totalBribes === 0 ? "NaN" : round.totalBribes;
+
+    console.log( round.totalBribes === 0 ? null : round.totalBribes.toFixed(0));
+    return round.totalBribes === 0 ? 'NaN' : round.totalBribes.toFixed(0)
+//                           .toLocaleString("en-US", {
+//                            minimumFractionDigits: 0,
+//                            maximumFractionDigits: 0,
+//                          })
+
   });
   const totalOffers = chartData?.chartdata.map((round) => {
-    return round.totalBriber;
+    return round.totalBriber.toFixed(0);
   });
   const avgPer1000 = chartData?.chartdata.map((round) => {
     return ((round.totalBribes / round.bribedVotes) * 1000).toFixed(2);
