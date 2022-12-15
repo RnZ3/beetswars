@@ -62,7 +62,7 @@ const useGetData = (requestedRound: string) => {
       console.timeEnd("get data");
 
       console.time("get votes");
-      const voteData = await getResults(bribeData.snapshot, address).then(
+      const voteData = await getResults(bribeData.snapshot).then(
         (response: VoteDataType) => {
           //console.log("return vote");
           return response;
