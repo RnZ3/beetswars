@@ -12,7 +12,7 @@ const Chart1 = React.memo(() => {
   const dataUrl = USE_API
     ? "https://beetswars-backend.cyclic.app/API/v1/chartdata"
     : "https://data.beetswars.live/chart-data-from-api.json";
-  const { requestRound, setShowChart } = useGlobalContext();
+  const { setGProposal, requestRound, setShowChart } = useGlobalContext();
   const [isLoaded, setLoaded] = useState(false);
   const [chartData, setData] = useState<ChartData>();
 
@@ -43,7 +43,7 @@ const Chart1 = React.memo(() => {
   //  console.log(chartData);
 
   const rounds = chartData?.chartdata.map((round) => {
-    return "Round " + (parseFloat(round.round)).toFixed(0);
+    return "Round " + parseFloat(round.round).toFixed(0);
   });
   const bribedVotes = chartData?.chartdata.map((round) => {
     return round.bribedVotes;
@@ -58,14 +58,12 @@ const Chart1 = React.memo(() => {
     return round.totalVoter;
   });
   const totalBribes = chartData?.chartdata.map((round) => {
-
-    console.log( round.totalBribes === 0 ? null : round.totalBribes.toFixed(0));
-    return round.totalBribes === 0 ? 'NaN' : round.totalBribes.toFixed(0)
-//                           .toLocaleString("en-US", {
-//                            minimumFractionDigits: 0,
-//                            maximumFractionDigits: 0,
-//                          })
-
+    //    console.log( round.totalBribes === 0 ? null : round.totalBribes.toFixed(0));
+    return round.totalBribes === 0 ? "NaN" : round.totalBribes.toFixed(0);
+    //                           .toLocaleString("en-US", {
+    //                            minimumFractionDigits: 0,
+    //                            maximumFractionDigits: 0,
+    //                          })
   });
   const totalOffers = chartData?.chartdata.map((round) => {
     return round.totalBriber.toFixed(0);
@@ -80,7 +78,7 @@ const Chart1 = React.memo(() => {
   const priceFbeets = chartData?.chartdata.map((round) => {
     return round.priceFbeets;
   });
-*/
+  */
   const endTime = chartData?.chartdata.map((round) => {
     return new Date(round.voteEnd * 1000).toLocaleDateString("en-US");
   });
@@ -122,14 +120,14 @@ const Chart1 = React.memo(() => {
       backgroundColor: "#FFFFFFEE",
       formatter: (args: any) => {
         //console.log(args);
-        let tooltip = `<p align='center'><b>${args[0].axisValue} - 
+        let tooltip = `<p align='center'><b>${args[0].axisValue} -
                         ${args[1].axisValue}</b></p>
                           <table> `;
 
         args.forEach((item: any) => {
           tooltip += `<tr><td>${item.marker}</td><td> ${
             item.seriesName
-          }:</td><td align='right'> 
+          }:</td><td align='right'>
             ${
               item.value === "0"
                 ? "0"
@@ -493,7 +491,7 @@ const Chart1 = React.memo(() => {
 
   const onChartClick = (params: any) => {
     const offset = 1;
-
+    setGProposal("pending");
     if (params.dataIndex > 2) {
       let requestedRound = params.dataIndex + offset;
       requestedRound =

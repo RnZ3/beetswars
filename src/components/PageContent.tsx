@@ -27,10 +27,10 @@ const PageContent: FC = () => {
     setShowChart,
     setGVersion,
     setGProposal,
+    gProposal,
   } = useGlobalContext();
-  const [tableCards, changeTableCards] = useState(true);
-  const [oldproposal, setOldproposal] = useState("nix");
 
+  const [tableCards, changeTableCards] = useState(true);
   const getData = useGetData(requestedRound);
   var rows: GridRowsProp = [];
   var version: string = "";
@@ -73,29 +73,25 @@ const PageContent: FC = () => {
 
   const handleChange = (e: any) => {
     console.log(e.target.value);
+    setGProposal("pending");
     requestRound(e.target.value);
   };
 
-  useEffect(() => {
-    if (!oldproposal) {
-      setOldproposal("no old proposal");
-    } else {
-      setOldproposal(proposal);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestedRound]);
+  console.log(gProposal, requestedRound, getData.status);
 
   useEffect(() => {
     setGVersion(version);
     setGProposal(proposal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, proposal]);
+  });
 
   return (
     <div>
+      {gProposal === "pending" && <MyBackdrop />}
       {getData.status === "loading" && (
         <Typography variant="h4" align="center">
           Loading....
+          <MyBackdrop />
         </Typography>
       )}
       {getData.status === "loaded" && (
@@ -365,7 +361,6 @@ const PageContent: FC = () => {
           )}
         </>
       )}
-      {proposal === oldproposal && <MyBackdrop />}
     </div>
   );
 };

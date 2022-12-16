@@ -25,7 +25,6 @@ const NavBar: FC = () => {
           background: "black",
           color: "white",
           textDecoration: "none",
-          paddingRight: "10px"
         }}
       >
         <div style={{ marginRight: "9px", marginLeft: "9px" }}>
