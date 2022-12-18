@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { ChartData } from "types/ChartData";
 
 type GlobalContext = {
   requestedRound: string;
@@ -9,18 +10,21 @@ type GlobalContext = {
   setGVersion: (c: string) => void;
   showChart: boolean;
   setShowChart: (c: boolean) => void;
+  gChartData: ChartData | undefined;
+  setGChartData: (c: ChartData | undefined) => void;
 };
 
 export const MyGlobalContext = createContext<GlobalContext>({
-  requestedRound: '',
+  requestedRound: "",
   requestRound: () => {},
-  gProposal: '',
+  gProposal: "",
   setGProposal: () => {},
-  gVersion: '',
+  gVersion: "",
   setGVersion: () => {},
   showChart: false,
   setShowChart: () => {},
+  gChartData: undefined,
+  setGChartData: () => {},
 });
 
 export const useGlobalContext = () => useContext(MyGlobalContext);
-

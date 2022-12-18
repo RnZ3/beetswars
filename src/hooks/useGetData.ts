@@ -14,14 +14,14 @@ import { BPT_ACT_QUERY } from "hooks/queries";
 import { contract_abi, contract_address } from "contracts/priceoracleconfig";
 import { ethers } from "ethers";
 import useTimer from "hooks/useTimer";
-import { useAccount } from 'wagmi'
+import { useAccount } from "wagmi";
 
 const useGetData = (requestedRound: string) => {
   const baseUrl = "https://beetswars-backend.cyclic.app/api/v1/bribedata/";
   const dataUrl = baseUrl + requestedRound;
 
-  const { address, isConnecting, isDisconnected } = useAccount()
-  console.log(  address, isConnecting, isDisconnected )
+  const { address, isConnecting, isDisconnected } = useAccount();
+  console.log(address, isConnecting, isDisconnected);
 
   const [voteActive, setActive] = useState(false);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
@@ -35,6 +35,8 @@ const useGetData = (requestedRound: string) => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      console.time("get index");
+
       const allRoundsIndex = await fetch(baseUrl || "")
         .then((response) => {
           return response.json();
@@ -46,7 +48,9 @@ const useGetData = (requestedRound: string) => {
           const list = liste.sort().reverse();
           return list;
         });
+      console.timeEnd("get index");
 
+      console.time("get data");
       const bribeData = await fetch(dataUrl || "")
         .then((response) => {
           return response.json();
@@ -55,13 +59,16 @@ const useGetData = (requestedRound: string) => {
           //console.log("return bribes");
           return response;
         });
+      console.timeEnd("get data");
 
-      const voteData = await getResults(bribeData.snapshot,address).then(
+      console.time("get votes");
+      const voteData = await getResults(bribeData.snapshot, address).then(
         (response: VoteDataType) => {
           //console.log("return vote");
           return response;
         }
       );
+      console.timeEnd("get votes");
 
       setActive(
         voteData.proposal.state === "active" ||
@@ -89,7 +96,8 @@ const useGetData = (requestedRound: string) => {
       }
 
       console.log(
-        "latest:", allRoundsIndex[0],
+        "latest:",
+        allRoundsIndex[0],
         "state:",
         voteActive,
         voteData.proposal.state,

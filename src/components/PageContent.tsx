@@ -13,6 +13,7 @@ import {
 } from "@mui/x-data-grid";
 import LabeledListItem from "components/LabeledListItem";
 import useGetData from "hooks/useGetData";
+import useChartData from "hooks/useChartData";
 import TimeFormatter from "utils/TimeFormatter";
 import { RoundList } from "types/Dashboard";
 import MyBackdrop from "components/MyBackdrop";
@@ -32,6 +33,7 @@ const PageContent: FC = () => {
 
   const [tableCards, changeTableCards] = useState(true);
   const getData = useGetData(requestedRound);
+  const chartData = useChartData();
   var rows: GridRowsProp = [];
   var version: string = "";
   var voteStart: number = 0;
@@ -65,6 +67,12 @@ const PageContent: FC = () => {
   }
 
   useEffect(() => {
+    if (requestedRound === "latest" && getData.status === "loaded") {
+      console.log(roundList[0].toString());
+      requestRound(roundList[0].toString());
+    }
+  }, [roundList]);
+  useEffect(() => {
     if (!voteActive && getData.status === "loaded") {
       setShowChart(true);
     }
@@ -77,13 +85,11 @@ const PageContent: FC = () => {
     requestRound(e.target.value);
   };
 
-  console.log(gProposal, requestedRound, getData.status);
-
   useEffect(() => {
     setGVersion(version);
     setGProposal(proposal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [proposal, version]);
 
   return (
     <div>

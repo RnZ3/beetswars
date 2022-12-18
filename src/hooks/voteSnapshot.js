@@ -57,7 +57,7 @@ export async function getResults(snapshotId, address) {
   const maxFirst = 1000;
   const votes = await getProposalVotes(maxFirst, proposal.id);
 
-  console.log(votes);
+  //console.log(votes);
 
   const voters = votes.map((vote) => vote.voter);
 
@@ -97,7 +97,8 @@ export async function getResults(snapshotId, address) {
 }
 
 export async function getVotingPower(proposal, address) {
-  const prosl = await getProposal(proposal);
+  console.log(proposal, address);
+  const prosl: string | null = await getProposal(proposal);
 
   const votingPower = await snapshot.utils.getVp(
     address,

@@ -4,7 +4,19 @@ import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { getVotingPower } from "hooks/voteSnapshot";
 
-let votingPower: any = "Z";
+let votingPower: any = "";
+
+function vpDisplayFormat(num: any, digits: any) {
+  var units = ["k", "M", "G", "T", "P", "E", "Z", "Y"],
+    decimal;
+  for (var i = units.length - 1; i >= 0; i--) {
+    decimal = Math.pow(1000, i + 1);
+    if (num <= -decimal || num >= decimal) {
+      return +(num / decimal).toFixed(digits) + units[i];
+    }
+  }
+  return num;
+}
 
 export const MyButton = () => {
   const [displayVp, setDisplayVp] = useState("");
@@ -13,23 +25,23 @@ export const MyButton = () => {
 
   async function blub() {
     if (account.address && gProposal) {
-      console.log(account.address, gProposal);
-      votingPower = "X";
       votingPower = await getVotingPower(gProposal, account.address);
-      setDisplayVp(
-        (votingPower / 1000).toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 1,
-        }) + " k"
-      );
+      setDisplayVp(vpDisplayFormat(votingPower, 2));
     }
-    console.log("VP:", votingPower, displayVp);
   }
+
+  console.log(
+    "VP:",
+    votingPower,
+    displayVp,
+    vpDisplayFormat(votingPower, 2),
+    vpDisplayFormat(5493000, 2)
+  );
 
   useEffect(() => {
     console.log("blub");
     blub();
-  }, [account.address, gProposal, votingPower]);
+  }, [account.address, gProposal]);
 
   return (
     <ConnectButton.Custom>

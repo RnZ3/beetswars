@@ -11,12 +11,14 @@ import { WagmiConfig } from "wagmi";
 import { client, chains } from "utils/wagmiconf";
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+import { ChartData } from "types/ChartData";
 
 function App() {
   const [requestedRound, requestRound] = useState<string>("latest");
   const [gVersion, setGVersion] = useState<string>("");
   const [gProposal, setGProposal] = useState<string>("");
   const [showChart, setShowChart] = useState<boolean>(false);
+  const [gChartData, setGChartData] = useState<ChartData>();
 
   return (
     <div>
@@ -30,6 +32,8 @@ function App() {
           setGVersion,
           gProposal,
           setGProposal,
+          gChartData,
+          setGChartData,
         }}
       >
         <WagmiConfig client={client}>

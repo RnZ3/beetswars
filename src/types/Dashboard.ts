@@ -8,8 +8,8 @@ export interface RoundList {
 }
 
 interface LabelValuePair {
-  label: string,
-  value: number,
+  label: string;
+  value: number;
 }
 
 export interface DashboardType {
