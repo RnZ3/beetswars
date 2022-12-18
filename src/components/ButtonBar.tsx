@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
-import { MyButton } from "components/MyButton";
+import { CustomConnectButton } from "components/CustomConnectButton";
 
 const ButtonBar: FC = () => {
   const { requestedRound, showChart, setShowChart, gProposal, gVersion } =
@@ -97,7 +97,7 @@ const ButtonBar: FC = () => {
             </button>
           </Box>
           <Box style={{}}>
-            <MyButton />
+            <CustomConnectButton />
           </Box>
         </Box>
       </Box>

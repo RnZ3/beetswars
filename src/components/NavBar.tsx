@@ -3,11 +3,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
-import { MyButton } from "components/MyButton";
+import { CustomConnectButton } from "components/CustomConnectButton";
 
 const NavBar: FC = () => {
-  const { requestedRound, showChart, setShowChart, gProposal, gVersion } = useGlobalContext();
-  const apilink: string = "https://beetswars-backend.cyclic.app/api/v1/bribedata/" + requestedRound
+  const { requestedRound, showChart, setShowChart, gProposal, gVersion } =
+    useGlobalContext();
+  const apilink: string =
+    "https://beetswars-backend.cyclic.app/api/v1/bribedata/" + requestedRound;
   const plink: string =
     "https://snapshot.org/#/beets.eth/" +
     (showChart ? "" : "proposal/" + gProposal);
@@ -33,7 +35,7 @@ const NavBar: FC = () => {
           </button>
         </div>
         <div style={{ marginRight: "9px", flexGrow: "1" }}>
-          <MyButton />
+          <CustomConnectButton />
         </div>
 
         <Typography variant="caption" align="right">

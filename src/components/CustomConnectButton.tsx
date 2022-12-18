@@ -3,22 +3,11 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { getVotingPower } from "hooks/voteSnapshot";
+import { vpDisplayFormat } from "utils/vpDisplayFormat";
 
 let votingPower: any = "";
 
-function vpDisplayFormat(num: any, digits: any) {
-  var units = ["k", "M", "G", "T", "P", "E", "Z", "Y"],
-    decimal;
-  for (var i = units.length - 1; i >= 0; i--) {
-    decimal = Math.pow(1000, i + 1);
-    if (num <= -decimal || num >= decimal) {
-      return +(num / decimal).toFixed(digits) + units[i];
-    }
-  }
-  return num;
-}
-
-export const MyButton = () => {
+export const CustomConnectButton = () => {
   const [displayVp, setDisplayVp] = useState("");
   const { gProposal } = useGlobalContext();
   const account = useAccount();
