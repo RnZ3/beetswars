@@ -32,7 +32,7 @@ const ButtonBar: FC = () => {
         }}
       >
         <Box>
-          <Typography variant="caption">
+          <Typography>
             <Link
               style={{ fontSize: "1rem" }}
               href="https://beets.fi/#/"

@@ -12,24 +12,18 @@ export const CustomConnectButton = () => {
   const { gProposal } = useGlobalContext();
   const account = useAccount();
 
-  async function blub() {
+  async function getVp() {
     if (account.address && gProposal) {
       votingPower = await getVotingPower(gProposal, account.address);
       setDisplayVp(vpDisplayFormat(votingPower, 2));
     }
   }
 
-  console.log(
-    "VP:",
-    votingPower,
-    displayVp,
-    vpDisplayFormat(votingPower, 2),
-    vpDisplayFormat(5493000, 2)
-  );
+  console.log("VP:", votingPower, displayVp, vpDisplayFormat(votingPower, 2));
 
   useEffect(() => {
-    console.log("blub");
-    blub();
+    console.log("getVp");
+    getVp();
   }, [account.address, gProposal]);
 
   return (
@@ -43,14 +37,8 @@ export const CustomConnectButton = () => {
         authenticationStatus,
         mounted,
       }) => {
-        // Note: If your app doesn't use authentication, you
-        // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== "loading";
-        const connected =
-          ready &&
-          account &&
-          chain &&
-          (!authenticationStatus || authenticationStatus === "authenticated");
+        const ready = mounted;
+        const connected = ready && account && chain;
 
         return (
           <div
