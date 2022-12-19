@@ -4,7 +4,7 @@ export function vpDisplayFormat(num: any, digits: any) {
     decimal = Math.pow(1000, i + 1);
     if (num <= -decimal || num >= decimal) {
       return +(num / decimal).toFixed(digits) + units[i];
-    }
+    } 
   }
   return num;
 }

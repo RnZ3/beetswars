@@ -4,6 +4,8 @@ import { ChartData } from "types/ChartData";
 type GlobalContext = {
   requestedRound: string;
   requestRound: (c: string) => void;
+  votingPower: number;
+  setVotingPower: (c: number) => void;
   gProposal: string;
   setGProposal: (c: string) => void;
   gVersion: string;
@@ -15,6 +17,8 @@ type GlobalContext = {
 };
 
 export const MyGlobalContext = createContext<GlobalContext>({
+  votingPower: 0,
+  setVotingPower: () => {},
   requestedRound: "",
   requestRound: () => {},
   gProposal: "",

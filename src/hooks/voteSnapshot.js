@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { PROPOSAL_QUERY, VOTES_QUERY } from "hooks/queries";
+import { VP_QUERY, PROPOSAL_QUERY, VOTES_QUERY } from "hooks/queries";
 import lodash from "lodash";
 //import configData from "config.json";
 
@@ -96,6 +96,7 @@ export async function getResults(snapshotId, address) {
   return { proposal, votingResults };
 }
 
+/*
 export async function getVotingPower(proposal, address) {
   console.log(proposal, address);
   if (address && proposal !== "pending") {
@@ -112,6 +113,25 @@ export async function getVotingPower(proposal, address) {
     console.log(votingPower, votingPower.vp);
 
     return votingPower.vp;
+  }
+}
+*/
+
+export async function getVotingPower2(proposal, address) {
+  if (address && proposal !== "pending") {
+    try {
+      const response = await request(endpoint, VP_QUERY, {
+        id: proposal,
+        voter: address,
+        first: 1,
+      });
+      //const proposalResClone = await lodash.cloneDeep(response);
+      console.log(response);
+      return response;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
   }
 }
 

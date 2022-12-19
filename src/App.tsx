@@ -19,11 +19,14 @@ function App() {
   const [gProposal, setGProposal] = useState<string>("");
   const [showChart, setShowChart] = useState<boolean>(false);
   const [gChartData, setGChartData] = useState<ChartData>();
+  const [votingPower, setVotingPower] = useState<number>(0);
 
   return (
     <div>
       <MyGlobalContext.Provider
         value={{
+          votingPower,
+          setVotingPower,
           requestedRound,
           requestRound,
           showChart,

@@ -2,27 +2,31 @@ import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
-import { getVotingPower } from "hooks/voteSnapshot";
+import { getVotingPower2 } from "hooks/voteSnapshot";
 import { vpDisplayFormat } from "utils/vpDisplayFormat";
 
-let votingPower: any = "";
-
 export const CustomConnectButton = () => {
-  const [displayVp, setDisplayVp] = useState("");
-  const { gProposal } = useGlobalContext();
+  const { gProposal, votingPower, setVotingPower } = useGlobalContext();
   const account = useAccount();
 
   async function getVp() {
     if (account.address && gProposal) {
-      votingPower = await getVotingPower(gProposal, account.address);
-      setDisplayVp(vpDisplayFormat(votingPower, 2));
-    }
-  }
+      await getVotingPower2(gProposal, account.address)
+        .then((response) => {
 
-  console.log("VP:", votingPower, displayVp, vpDisplayFormat(votingPower, 2));
+            if (response && response.votes.length > 0 ) {
+              setVotingPower(response.votes[0].vp);
+
+            } else {
+              setVotingPower(0)
+           }
+          console.log("VP raw",votingPower)
+        })
+      }
+    }
 
   useEffect(() => {
-    console.log("getVp");
+    console.log("get Vp");
     getVp();
   }, [account.address, gProposal]);
 
@@ -72,7 +76,8 @@ export const CustomConnectButton = () => {
                   <button onClick={openAccountModal} type="button">
                     {account.displayName}
                     {" | VP: "}
-                    {displayVp}
+                    {' '}
+                    {vpDisplayFormat(votingPower, 2)}
                   </button>
                 </div>
               );
