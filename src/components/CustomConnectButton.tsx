@@ -3,7 +3,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { getVotingPower2 } from "hooks/voteSnapshot";
-import { vpDisplayFormat } from "utils/vpDisplayFormat";
+import { abbreviateNumber  } from "utils/vpDisplayFormat";
 
 export const CustomConnectButton = () => {
   const { gProposal, votingPower, setVotingPower } = useGlobalContext();
@@ -12,21 +12,20 @@ export const CustomConnectButton = () => {
   async function getVp() {
     if (account.address && gProposal) {
       await getVotingPower2(gProposal, account.address)
-        .then((response) => {
-
-            if (response && response.votes.length > 0 ) {
-              setVotingPower(response.votes[0].vp);
-
-            } else {
-              setVotingPower(0)
-           }
-          console.log("VP raw",votingPower)
-        })
-      }
+      .then((response) => {
+        if (response && response.votes.length > 0 ) {
+          setVotingPower(response.votes[0].vp);
+        } else {
+          setVotingPower(0)
+        }
+      })
     }
+  }
+
+  console.log("raw VP",votingPower)
 
   useEffect(() => {
-    console.log("get Vp");
+    console.log("get VP");
     getVp();
   }, [account.address, gProposal]);
 
@@ -77,7 +76,7 @@ export const CustomConnectButton = () => {
                     {account.displayName}
                     {" | VP: "}
                     {' '}
-                    {vpDisplayFormat(votingPower, 2)}
+                    {abbreviateNumber(votingPower)}
                   </button>
                 </div>
               );
