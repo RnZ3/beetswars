@@ -77,6 +77,7 @@ const useGetData = (requestedRound: string) => {
           : false
       );
 
+      const endTime2 = voteData.proposal.end
       const endTime = new Date(voteData.proposal.end * 1000)
         .toLocaleDateString("de-DE")
         .replace(/\./g, "-");
@@ -180,14 +181,20 @@ const useGetData = (requestedRound: string) => {
                     "/history?date=" +
                     endTime +
                     "&localization=false";
-                  await fetch(tknUrl || "")
+                  const tknUrl2 =
+                    "https://api.coingecko.com/api/v3/coins/beethoven-x/market_chart/range?vs_currency=usd&from=" +
+                    endTime2 +
+                   "&to=" +
+                   (endTime2 + 86400)
+                  await fetch(tknUrl2 || "")
                     .then((response) => {
                       return response.json();
                     })
                     .then((response) => {
+console.log(response.prices[0][1])
                       const data: TokenPrice = {
                         token: tkn.token,
-                        price: response.market_data.current_price.usd,
+                        price: response.prices[0][1],
                       };
                       tokenPrices.push(data);
                     });

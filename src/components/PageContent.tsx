@@ -29,6 +29,7 @@ const PageContent: FC = () => {
     setGVersion,
     setGProposal,
     gProposal,
+    votingPower,
   } = useGlobalContext();
 
   const [tableCards, changeTableCards] = useState(true);
@@ -68,7 +69,7 @@ const PageContent: FC = () => {
 
   useEffect(() => {
     if (requestedRound === "latest" && getData.status === "loaded") {
-      console.log(roundList[0].toString());
+      //console.log(roundList[0].toString());
       requestRound(roundList[0].toString());
     }
   }, [roundList]);
@@ -241,7 +242,11 @@ const PageContent: FC = () => {
                                 align="center"
                                 sx={{ color: "#4BE39C" }}
                               >
-                                {"$" + (data.valuePerVote * 1000).toFixed(2)}
+                                { "$"  + (1000 * data.valuePerVote).toFixed(2) }
+                                {votingPower !== 0
+                                    ? " (" + (votingPower * data.valuePerVote).toFixed(2) + ")"
+                                    : ""
+                                }
                               </Typography>
                             </div>
                           ) : (
