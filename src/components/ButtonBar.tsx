@@ -25,16 +25,16 @@ const ButtonBar: FC = () => {
           paddingLeft: "9px",
           display: "flex",
           justifyContent: "space-between",
-          background: "#010101",
+          background: "#000",
           color: "white",
           textDecoration: "none",
           marginBottom: "20px",
+          fontSize: "1rem",
+          fontFamily: "sans",
         }}
       >
         <Box>
-          <Typography>
             <Link
-              style={{ fontSize: "1rem" }}
               href="https://beets.fi/#/"
               target="_blank"
               color="white"
@@ -44,7 +44,6 @@ const ButtonBar: FC = () => {
             </Link>{" "}
             |&nbsp;
             <Link
-              style={{ fontSize: "1rem" }}
               href={plink}
               target="_blank"
               color="white"
@@ -54,7 +53,6 @@ const ButtonBar: FC = () => {
             </Link>{" "}
             |&nbsp;
             <Link
-              style={{ fontSize: "1rem" }}
               href="https://github.com/mobiusTripper-crypto/beetswars"
               target="_blank"
               color="white"
@@ -67,7 +65,6 @@ const ButtonBar: FC = () => {
                 {" "}
                 |&nbsp;
                 <Link
-                  style={{ fontSize: "1rem" }}
                   // href="https://github.com/mobiusTripper-crypto/beetswars-data"
                   href={apilink}
                   target="_blank"
@@ -78,7 +75,6 @@ const ButtonBar: FC = () => {
                 </Link>
               </>
             )}
-          </Typography>
         </Box>
         <Box
           sx={{
@@ -86,7 +82,6 @@ const ButtonBar: FC = () => {
             paddingRight: "3px",
             display: "flex",
             justifyContent: "flex-end",
-            background: "black",
             color: "white",
             textDecoration: "none",
           }}

@@ -14,16 +14,16 @@ code {
 
 :root {
   --bwback: #000;
+  --bwblack: #000;
   --bwgrey: #ddd;
   --bwgreen: #4be39c;
   --bwred: #ed1200;
   --bwcol: #fff;
-  --bwsize: 0.9rem;
+  --bwsize: 1rem;
 }
 
 button {
   background-color: var(--bwback);
-  border: none;
   color: var(--bwcol);
   padding: 1px 1rem;
   text-align: center;
@@ -40,14 +40,17 @@ button {
 
 button:hover {
   background-color: var(--bwgreen);
-  color: var(--bwred);
+  background-color: var(--bwcol);
+  color: var(--bwblack);
   border: 1px solid #777;
+  font-weight: 600;
 }
 
 select:not([multiple]):hover {
-  background-color: var(--bwgreen);
-  color: var(--bwred);
+  background-color: var(--bwcol);
+  color: var(--bwblack);
   border: 1px solid #777;
+  font-weight: 600;
 }
 
 select:not([multiple]) {
