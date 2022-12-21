@@ -4,9 +4,15 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { CustomConnectButton } from "components/CustomConnectButton";
+import { abbreviateNumber  } from "utils/vpDisplayFormat";
+import { useAccount } from "wagmi";
+
+
 
 const ButtonBar: FC = () => {
-  const { requestedRound, showChart, setShowChart, gProposal, gVersion } =
+  const account = useAccount();
+
+  const { votingPower, requestedRound, showChart, setShowChart, gProposal, gVersion } =
     useGlobalContext();
   const apilink: string =
     "https://beetswars-backend.cyclic.app/api/v1/bribedata/" + requestedRound;
@@ -14,7 +20,7 @@ const ButtonBar: FC = () => {
     "https://snapshot.org/#/beets.eth/" +
     (showChart ? "" : "proposal/" + gProposal);
 
-  //  console.log(showChart, gProposal, gVersion);
+  // console.log(account,votingPower.full)
 
   return (
     <>
@@ -28,7 +34,7 @@ const ButtonBar: FC = () => {
           background: "#000",
           color: "white",
           textDecoration: "none",
-          marginBottom: "20px",
+          marginBottom: "0px",
           fontSize: "1rem",
           fontFamily: "sans",
         }}
@@ -94,6 +100,37 @@ const ButtonBar: FC = () => {
           <Box style={{}}>
             <CustomConnectButton />
           </Box>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          padding: "1px",
+          paddingRight: "9px",
+          paddingLeft: "9px",
+          display: "flex",
+          justifyContent: "flex-end",
+          color: "#eee",
+          textDecoration: "none",
+          marginBottom: "23px",
+          fontFamily: "sans",
+          fontSize: "0.9rem",
+          height: "0.9rem",
+        }}
+      >
+        <Box
+          sx={{
+            padding: "0px",
+            paddingRight: "9px",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          {account.isConnected && (votingPower !== undefined)  ? (
+            <Box>
+              VP max: {abbreviateNumber(votingPower.full)} | 
+              VP selected Round: {abbreviateNumber(votingPower.round)}
+            </Box>
+          ) : ("") }
         </Box>
       </Box>
     </>

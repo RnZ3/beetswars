@@ -13,6 +13,7 @@ var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
 
 export function abbreviateNumber(number:number){
 
+  if (number) {
     // what tier? (determines SI symbol)
     var tier = Math.log10(Math.abs(number)) / 3 | 0;
 
@@ -28,4 +29,6 @@ export function abbreviateNumber(number:number){
 
     // format number and add suffix
     return scaled.toFixed(2) + suffix;
+  }
+  return 0
 }

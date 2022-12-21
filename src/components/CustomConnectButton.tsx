@@ -2,27 +2,39 @@ import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
-import { getVotingPower2 } from "hooks/voteSnapshot";
+import { getVotingPower, getVotingPower2 } from "hooks/voteSnapshot";
 import { abbreviateNumber  } from "utils/vpDisplayFormat";
 
 export const CustomConnectButton = () => {
   const { gProposal, votingPower, setVotingPower } = useGlobalContext();
   const account = useAccount();
-
+  let vpround = 0;
+  let vpfull = 0;
   async function getVp() {
     if (account.address && gProposal) {
-      await getVotingPower2(gProposal, account.address)
-      .then((response) => {
-        if (response && response.votes.length > 0 ) {
-          setVotingPower(response.votes[0].vp);
-        } else {
-          setVotingPower(0)
-        }
-      })
+      await Promise.all([
+        await getVotingPower(gProposal, account.address)
+          .then((response) => {
+//            console.log("V1:",response)
+            vpfull = response;
+          }
+        ),
+        await getVotingPower2(gProposal, account.address)
+          .then((response) => {
+//            console.log("V2:",response)
+            if (response && response.votes.length > 0 ) {
+              vpround = response.votes[0].vp;
+            } else {
+              vpround = 0;
+            }
+          }),
+        await setVotingPower({full:vpfull, round: vpround})
+      ])
     }
   }
 
-  console.log("raw VP",votingPower)
+  console.log(votingPower?.full)
+  console.log(votingPower?.round)
 
   useEffect(() => {
     console.log("get VP");
@@ -74,9 +86,6 @@ export const CustomConnectButton = () => {
                 <div>
                   <button onClick={openAccountModal} type="button">
                     {account.displayName}
-                    {" | VP: "}
-                    {' '}
-                    {abbreviateNumber(votingPower)}
                   </button>
                 </div>
               );
@@ -87,3 +96,12 @@ export const CustomConnectButton = () => {
     </ConnectButton.Custom>
   );
 };
+
+
+/*
+
+                    {account.displayName}
+                    {" | VP: "}
+                    {' '}
+                    {abbreviateNumber(votingPower?.round)}
+*/

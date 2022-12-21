@@ -243,8 +243,8 @@ const PageContent: FC = () => {
                                 sx={{ color: "#4BE39C" }}
                               >
                                 { "$"  + (1000 * data.valuePerVote).toFixed(2) }
-                                {votingPower !== 0
-                                    ? " (" + (votingPower * data.valuePerVote).toFixed(2) + ")"
+                                {votingPower?.round !== 0
+                                    ? " (" + (votingPower?.round * data.valuePerVote).toFixed(2) + ")"
                                     : ""
                                 }
                               </Typography>

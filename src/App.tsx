@@ -12,6 +12,7 @@ import { client, chains } from "utils/wagmiconf";
 import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { ChartData } from "types/ChartData";
+import { VotingPower } from "types/VotingPower";
 
 function App() {
   const [requestedRound, requestRound] = useState<string>("latest");
@@ -19,7 +20,7 @@ function App() {
   const [gProposal, setGProposal] = useState<string>("");
   const [showChart, setShowChart] = useState<boolean>(false);
   const [gChartData, setGChartData] = useState<ChartData>();
-  const [votingPower, setVotingPower] = useState<number>(0);
+  const [votingPower, setVotingPower] = useState<VotingPower>({full:0,round:0});
 
   return (
     <div>

@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
 import { ChartData } from "types/ChartData";
+import { VotingPower } from "types/VotingPower";
+
 
 type GlobalContext = {
   requestedRound: string;
   requestRound: (c: string) => void;
-  votingPower: number;
-  setVotingPower: (c: number) => void;
   gProposal: string;
   setGProposal: (c: string) => void;
   gVersion: string;
@@ -14,11 +14,11 @@ type GlobalContext = {
   setShowChart: (c: boolean) => void;
   gChartData: ChartData | undefined;
   setGChartData: (c: ChartData | undefined) => void;
+  votingPower: VotingPower ;
+  setVotingPower: (c: VotingPower ) => void;
 };
 
 export const MyGlobalContext = createContext<GlobalContext>({
-  votingPower: 0,
-  setVotingPower: () => {},
   requestedRound: "",
   requestRound: () => {},
   gProposal: "",
@@ -29,6 +29,8 @@ export const MyGlobalContext = createContext<GlobalContext>({
   setShowChart: () => {},
   gChartData: undefined,
   setGChartData: () => {},
+  votingPower: {full:0,round:0},
+  setVotingPower: () => {},
 });
 
 export const useGlobalContext = () => useContext(MyGlobalContext);

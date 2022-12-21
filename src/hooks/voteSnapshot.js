@@ -107,12 +107,10 @@ export async function getResults(snapshotId) {
   return { proposal, votingResults };
 }
 
-/*
 export async function getVotingPower(proposal, address) {
   console.log(proposal, address);
   if (address && proposal !== "pending") {
     const propsl: any = await getProposal(proposal);
-
     const votingPower = await snapshot.utils.getVp(
       address,
       network,
@@ -120,13 +118,9 @@ export async function getVotingPower(proposal, address) {
       propsl.snapshot,
       space
     );
-
-    console.log(votingPower, votingPower.vp);
-
     return votingPower.vp;
   }
 }
-*/
 
 export async function getVotingPower2(proposal, address) {
   if (address && proposal !== "pending") {
@@ -136,8 +130,6 @@ export async function getVotingPower2(proposal, address) {
         voter: address,
         first: 1,
       });
-      //const proposalResClone = await lodash.cloneDeep(response);
-      console.log(response);
       return response;
     } catch (e) {
       console.log(e);
