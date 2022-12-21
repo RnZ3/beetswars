@@ -30,6 +30,8 @@ export const CustomConnectButton = () => {
           }),
         await setVotingPower({full:vpfull, round: vpround})
       ])
+    } else if (!account.isConnected) {
+        await setVotingPower({full: 0, round: 0})
     }
   }
 
