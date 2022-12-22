@@ -8,6 +8,7 @@ import snapshot from "@snapshot-labs/snapshot.js";
 const endpoint = "https://hub.snapshot.org/graphql";
 const network = "250";
 const space = "beets.eth";
+const delegation = false;
 
 const testaddress = "0xc677e71b02adc94534de993a907352f748d21143";
 
@@ -68,7 +69,7 @@ export async function getResults(snapshotId) {
   console.time("get votes");
   const votes = await getAllProposalVotes(proposal.id);
   console.timeEnd("get votes");
-  console.log(votes.length,"votes found");
+  console.log(votes.length, "votes found");
 
   const voters = votes.map((vote) => vote.voter);
 
@@ -111,13 +112,17 @@ export async function getVotingPower(proposal, address) {
   console.log(proposal, address);
   if (address && proposal !== "pending") {
     const propsl: any = await getProposal(proposal);
-    const votingPower = await snapshot.utils.getVp(
+    console.log(propsl);
+    const votingPower = await getVpLocal(
+      //const votingPower = await snapshot.utils.getVp(
       address,
       network,
       propsl.strategies,
       propsl.snapshot,
-      space
+      space,
+      delegation
     );
+    console.log(votingPower);
     return votingPower.vp;
   }
 }
@@ -136,6 +141,43 @@ export async function getVotingPower2(proposal, address) {
       return e;
     }
   }
+}
+
+async function getVpLocal(
+  address: string,
+  network: string,
+  strategies: Strategy[],
+  snapshot: number | "latest",
+  space: string,
+  delegation: boolean,
+  options?: Options
+) {
+  if (!options) options = {};
+  if (!options.url) options.url = "https://score.snapshot.org";
+  const init = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "get_vp",
+      params: {
+        address,
+        network,
+        strategies,
+        snapshot,
+        space,
+        delegation,
+      },
+      id: null,
+    }),
+  };
+  const res = await fetch(options.url, init);
+  const json = await res.json();
+  if (json.error) return Promise.reject(json.error);
+  if (json.result) return json.result;
 }
 
 export default getProposal;
