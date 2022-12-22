@@ -22,13 +22,19 @@ const Chart1 = React.memo(() => {
     return "Round " + parseFloat(round.round).toFixed(0);
   });
   const bribedVotes = chartData?.chartdata.map((round) => {
-    return round.bribedVotes;
+    return round.bribedVotes.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
   });
   const bribedVotesRatio = chartData?.chartdata.map((round) => {
     return ((round.bribedVotes / round.totalVotes) * 100).toFixed(1);
   });
   const totalVotes = chartData?.chartdata.map((round) => {
-    return round.totalVotes;
+    return round.totalVotes.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
   });
   const totalVoter = chartData?.chartdata.map((round) => {
     return round.totalVoter;
@@ -41,6 +47,8 @@ const Chart1 = React.memo(() => {
     //                            maximumFractionDigits: 0,
     //                          })
   });
+  console.log(totalBribes);
+  console.log(totalVotes);
   const totalOffers = chartData?.chartdata.map((round) => {
     return round.totalBriber.toFixed(0);
   });
@@ -59,7 +67,13 @@ const Chart1 = React.memo(() => {
     return new Date(round.voteEnd * 1000).toLocaleDateString("en-US");
   });
   const votingApr = chartData?.chartdata.map((round) => {
-    return (round.totalBribes / round.priceFbeets / round.bribedVotes) * 2600;
+    return (
+      (round.totalBribes / round.priceFbeets / round.bribedVotes) *
+      2600
+    ).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   });
   //numRounds = rounds.length;
 
@@ -95,7 +109,6 @@ const Chart1 = React.memo(() => {
       padding: 7,
       backgroundColor: "#FFFFFFEE",
       formatter: (args: any) => {
-        //console.log(args);
         let tooltip = `<p align='center'><b>${args[0].axisValue} -
                         ${args[1].axisValue}</b></p>
                           <table> `;
@@ -105,12 +118,13 @@ const Chart1 = React.memo(() => {
             item.seriesName
           }:</td><td align='right'>
             ${
-              item.value === "0"
-                ? "0"
-                : item.value.toLocaleString("en-US", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })
+              item.value
+              //=== "0"
+              //                ? "0"
+              //                : item.value.toLocaleString("en-US", {
+              //                    minimumFractionDigits: 0,
+              //                    maximumFractionDigits: 0,
+              //                  })
             }</td></tr>`;
         });
         tooltip += `</table>`;

@@ -4,16 +4,20 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { CustomConnectButton } from "components/CustomConnectButton";
-import { abbreviateNumber  } from "utils/vpDisplayFormat";
+import { abbreviateNumber } from "utils/vpDisplayFormat";
 import { useAccount } from "wagmi";
-
-
 
 const ButtonBar: FC = () => {
   const account = useAccount();
 
-  const { votingPower, requestedRound, showChart, setShowChart, gProposal, gVersion } =
-    useGlobalContext();
+  const {
+    votingPower,
+    requestedRound,
+    showChart,
+    setShowChart,
+    gProposal,
+    gVersion,
+  } = useGlobalContext();
   const apilink: string =
     "https://beetswars-backend.cyclic.app/api/v1/bribedata/" + requestedRound;
   const plink: string =
@@ -40,47 +44,42 @@ const ButtonBar: FC = () => {
         }}
       >
         <Box>
-            <Link
-              href="https://beets.fi/#/"
-              target="_blank"
-              color="white"
-              underline="hover"
-            >
-              beethoven-x
-            </Link>{" "}
-            |&nbsp;
-            <Link
-              href={plink}
-              target="_blank"
-              color="white"
-              underline="hover"
-            >
-              snapshot
-            </Link>{" "}
-            |&nbsp;
-            <Link
-              href="https://github.com/mobiusTripper-crypto/beetswars"
-              target="_blank"
-              color="white"
-              underline="hover"
-            >
-              github
-            </Link>
-            {!showChart && (
-              <>
-                {" "}
-                |&nbsp;
-                <Link
-                  // href="https://github.com/mobiusTripper-crypto/beetswars-data"
-                  href={apilink}
-                  target="_blank"
-                  color="white"
-                  underline="hover"
-                >
-                  data: {gVersion}
-                </Link>
-              </>
-            )}
+          <Link
+            href="https://beets.fi/#/"
+            target="_blank"
+            color="white"
+            underline="hover"
+          >
+            beethoven-x
+          </Link>{" "}
+          |&nbsp;
+          <Link href={plink} target="_blank" color="white" underline="hover">
+            snapshot
+          </Link>{" "}
+          |&nbsp;
+          <Link
+            href="https://github.com/mobiusTripper-crypto/beetswars"
+            target="_blank"
+            color="white"
+            underline="hover"
+          >
+            github
+          </Link>
+          {!showChart && (
+            <>
+              {" "}
+              |&nbsp;
+              <Link
+                // href="https://github.com/mobiusTripper-crypto/beetswars-data"
+                href={apilink}
+                target="_blank"
+                color="white"
+                underline="hover"
+              >
+                data: {gVersion}
+              </Link>
+            </>
+          )}
         </Box>
         <Box
           sx={{
@@ -117,21 +116,14 @@ const ButtonBar: FC = () => {
           height: "0.9rem",
         }}
       >
-        <Box
-          sx={{
-            padding: "0px",
-            paddingRight: "9px",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          {account.isConnected && (votingPower !== undefined)  ? (
-            <Box>
-              VP max: {abbreviateNumber(votingPower.full)} | 
-              VP selected Round: {abbreviateNumber(votingPower.round)}
-            </Box>
-          ) : ("") }
-        </Box>
+        {account.isConnected && votingPower !== undefined ? (
+          <Box>
+            VP max: <b>{abbreviateNumber(votingPower.full)}</b> | VP selected
+            Round: <b>{abbreviateNumber(votingPower.round)}</b>
+          </Box>
+        ) : (
+          ""
+        )}
       </Box>
     </>
   );

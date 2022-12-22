@@ -3,7 +3,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { getVotingPower, getVotingPower2 } from "hooks/voteSnapshot";
-import { abbreviateNumber  } from "utils/vpDisplayFormat";
+import { abbreviateNumber } from "utils/vpDisplayFormat";
 
 export const CustomConnectButton = () => {
   const { gProposal, votingPower, setVotingPower } = useGlobalContext();
@@ -13,30 +13,26 @@ export const CustomConnectButton = () => {
   async function getVp() {
     if (account.address && gProposal) {
       await Promise.all([
-        await getVotingPower(gProposal, account.address)
-          .then((response) => {
-//            console.log("V1:",response)
-            vpfull = response;
+        await getVotingPower(gProposal, account.address).then((response) => {
+          //            console.log("V1:",response)
+          vpfull = response;
+        }),
+        await getVotingPower2(gProposal, account.address).then((response) => {
+          //            console.log("V2:",response)
+          if (response && response.votes.length > 0) {
+            vpround = response.votes[0].vp;
+          } else {
+            vpround = 0;
           }
-        ),
-        await getVotingPower2(gProposal, account.address)
-          .then((response) => {
-//            console.log("V2:",response)
-            if (response && response.votes.length > 0 ) {
-              vpround = response.votes[0].vp;
-            } else {
-              vpround = 0;
-            }
-          }),
-        await setVotingPower({full:vpfull, round: vpround})
-      ])
+        }),
+        await setVotingPower({ full: vpfull, round: vpround }),
+      ]);
     } else if (!account.isConnected) {
-        await setVotingPower({full: 0, round: 0})
+      await setVotingPower({ full: 0, round: 0 });
     }
   }
 
-  console.log(votingPower?.full)
-  console.log(votingPower?.round)
+  console.log(votingPower);
 
   useEffect(() => {
     console.log("get VP");
@@ -98,7 +94,6 @@ export const CustomConnectButton = () => {
     </ConnectButton.Custom>
   );
 };
-
 
 /*
 

@@ -21,7 +21,7 @@ const useGetData = (requestedRound: string) => {
   const dataUrl = baseUrl + requestedRound;
 
   const { address, isConnecting, isDisconnected } = useAccount();
-  console.log(address, isConnecting, isDisconnected);
+  //  console.log(address, isConnecting, isDisconnected);
 
   const [voteActive, setActive] = useState(false);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
@@ -35,7 +35,7 @@ const useGetData = (requestedRound: string) => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      console.time("get index");
+      //      console.time("get index");
 
       const allRoundsIndex = await fetch(baseUrl || "")
         .then((response) => {
@@ -48,9 +48,9 @@ const useGetData = (requestedRound: string) => {
           const list = liste.sort().reverse();
           return list;
         });
-      console.timeEnd("get index");
+      //      console.timeEnd("get index");
 
-      console.time("get data");
+      //      console.time("get data");
       const bribeData = await fetch(dataUrl || "")
         .then((response) => {
           return response.json();
@@ -59,16 +59,16 @@ const useGetData = (requestedRound: string) => {
           //console.log("return bribes");
           return response;
         });
-      console.timeEnd("get data");
+      //      console.timeEnd("get data");
 
-      console.time("get votes");
+      //      console.time("get votes");
       const voteData = await getResults(bribeData.snapshot).then(
         (response: VoteDataType) => {
           //console.log("return vote");
           return response;
         }
       );
-      console.timeEnd("get votes");
+      //      console.timeEnd("get votes");
 
       setActive(
         voteData.proposal.state === "active" ||
@@ -77,7 +77,7 @@ const useGetData = (requestedRound: string) => {
           : false
       );
 
-      const endTime2 = voteData.proposal.end
+      const endTime2 = voteData.proposal.end;
       const endTime = new Date(voteData.proposal.end * 1000)
         .toLocaleDateString("de-DE")
         .replace(/\./g, "-");
@@ -184,14 +184,14 @@ const useGetData = (requestedRound: string) => {
                   const tknUrl2 =
                     "https://api.coingecko.com/api/v3/coins/beethoven-x/market_chart/range?vs_currency=usd&from=" +
                     endTime2 +
-                   "&to=" +
-                   (endTime2 + 86400)
+                    "&to=" +
+                    (endTime2 + 86400);
                   await fetch(tknUrl2 || "")
                     .then((response) => {
                       return response.json();
                     })
                     .then((response) => {
-console.log(response.prices[0][1])
+                      //console.log(response.prices[0][1])
                       const data: TokenPrice = {
                         token: tkn.token,
                         price: response.prices[0][1],
