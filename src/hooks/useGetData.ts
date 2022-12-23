@@ -7,7 +7,7 @@ import {
 } from "types/BribeData";
 import { ServiceType } from "types/Service";
 import { VoteDataType } from "types/VoteData";
-import { DashboardType, DashboardReturn } from "types/Dashboard";
+import { RoundList, DashboardType, DashboardReturn } from "types/Dashboard";
 import { getResults } from "hooks/voteSnapshot";
 import { request } from "graphql-request";
 import { BPT_ACT_QUERY } from "hooks/queries";
@@ -19,11 +19,10 @@ import { useAccount } from "wagmi";
 const useGetData = (requestedRound: string) => {
   const baseUrl = "https://beetswars-backend.cyclic.app/api/v1/bribedata/";
   const dataUrl = baseUrl + requestedRound;
-
   const { address, isConnecting, isDisconnected } = useAccount();
   //  console.log(address, isConnecting, isDisconnected);
-
   const [voteActive, setActive] = useState(false);
+  const [roundListCache, setRoundListCache] = useState<RoundList[]>([]);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
   const refresh = useTimer(refreshInterval);
   const [dashboardResult, setDashboardResult] = useState<
@@ -35,7 +34,10 @@ const useGetData = (requestedRound: string) => {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      //      console.time("get index");
+
+
+      if (roundListCache.length === 0) {
+        console.log("round list:", roundListCache.length);
 
       const allRoundsIndex = await fetch(baseUrl || "")
         .then((response) => {
@@ -48,9 +50,11 @@ const useGetData = (requestedRound: string) => {
           const list = liste.sort().reverse();
           return list;
         });
-      //      console.timeEnd("get index");
 
-      //      console.time("get data");
+      setRoundListCache(allRoundsIndex);
+      }
+
+
       const bribeData = await fetch(dataUrl || "")
         .then((response) => {
           return response.json();
@@ -59,16 +63,13 @@ const useGetData = (requestedRound: string) => {
           //console.log("return bribes");
           return response;
         });
-      //      console.timeEnd("get data");
 
-      //      console.time("get votes");
       const voteData = await getResults(bribeData.snapshot).then(
         (response: VoteDataType) => {
           //console.log("return vote");
           return response;
         }
       );
-      //      console.timeEnd("get votes");
 
       setActive(
         voteData.proposal.state === "active" ||
@@ -98,7 +99,7 @@ const useGetData = (requestedRound: string) => {
 
       console.log(
         "latest:",
-        allRoundsIndex[0],
+        roundListCache[0],
         "state:",
         voteActive,
         voteData.proposal.state,
@@ -231,7 +232,7 @@ const useGetData = (requestedRound: string) => {
           proposalTitle: voteData.proposal.title,
           proposalId: bribeData.snapshot,
           proposalState: voteData.proposal.state,
-          roundList: allRoundsIndex,
+          roundList: roundListCache,
         },
       });
     };

@@ -22,30 +22,19 @@ const Chart1 = React.memo(() => {
     return "Round " + parseFloat(round.round).toFixed(0);
   });
   const bribedVotes = chartData?.chartdata.map((round) => {
-    return round.bribedVotes.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return round.bribedVotes
   });
   const bribedVotesRatio = chartData?.chartdata.map((round) => {
     return ((round.bribedVotes / round.totalVotes) * 100).toFixed(1);
   });
   const totalVotes = chartData?.chartdata.map((round) => {
-    return round.totalVotes.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+    return round.totalVotes
   });
   const totalVoter = chartData?.chartdata.map((round) => {
     return round.totalVoter;
   });
   const totalBribes = chartData?.chartdata.map((round) => {
-    //    console.log( round.totalBribes === 0 ? null : round.totalBribes.toFixed(0));
-    return round.totalBribes === 0 ? "NaN" : round.totalBribes.toFixed(0);
-    //                           .toLocaleString("en-US", {
-    //                            minimumFractionDigits: 0,
-    //                            maximumFractionDigits: 0,
-    //                          })
+    return round.totalBribes === 0 ? "NaN" : round.totalBribes
   });
   console.log(totalBribes);
   console.log(totalVotes);
@@ -119,12 +108,12 @@ const Chart1 = React.memo(() => {
           }:</td><td align='right'>
             ${
               item.value
-              //=== "0"
-              //                ? "0"
-              //                : item.value.toLocaleString("en-US", {
-              //                    minimumFractionDigits: 0,
-              //                    maximumFractionDigits: 0,
-              //                  })
+              === "0"
+                              ? "0"
+                              : item.value.toLocaleString("en-US", {
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                })
             }</td></tr>`;
         });
         tooltip += `</table>`;

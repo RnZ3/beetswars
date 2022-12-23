@@ -9,7 +9,6 @@ const endpoint = "https://hub.snapshot.org/graphql";
 const network = "250";
 const space = "beets.eth";
 const delegation = false;
-
 const testaddress = "0xc677e71b02adc94534de993a907352f748d21143";
 
 async function getProposal(id) {
@@ -18,7 +17,6 @@ async function getProposal(id) {
       id,
     });
     const proposalResClone = await lodash.cloneDeep(response);
-
     return proposalResClone.proposal;
   } catch (e) {
     console.log(e);
@@ -65,12 +63,7 @@ async function getAllProposalVotes(proposalId: string) {
 
 export async function getResults(snapshotId) {
   const proposal = await getProposal(snapshotId);
-
-  console.time("get votes");
   const votes = await getAllProposalVotes(proposal.id);
-  console.timeEnd("get votes");
-  console.log(votes.length, "votes found");
-
   const voters = votes.map((vote) => vote.voter);
 
   const scores = await snapshot.utils.getScores(

@@ -118,8 +118,7 @@ const ButtonBar: FC = () => {
       >
         {account.isConnected && votingPower !== undefined ? (
           <Box>
-            VP max: <b>{abbreviateNumber(votingPower.full)}</b> | VP selected
-            Round: <b>{abbreviateNumber(votingPower.round)}</b>
+            VP snapshot.js: <b>{abbreviateNumber(votingPower.full)}</b> | VP gql query: <b>{abbreviateNumber(votingPower.round)}</b>
           </Box>
         ) : (
           ""

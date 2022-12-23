@@ -67,12 +67,15 @@ const PageContent: FC = () => {
     voteActive = true;
   }
 
+
   useEffect(() => {
     if (requestedRound === "latest" && getData.status === "loaded") {
-      //console.log(roundList[0].toString());
-      requestRound(roundList[0].toString());
+      console.log(roundList[0]);
+//      requestRound(roundList[0].toString());
     }
   }, [roundList]);
+
+
   useEffect(() => {
     if (!voteActive && getData.status === "loaded") {
       setShowChart(true);
