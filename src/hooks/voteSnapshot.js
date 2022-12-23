@@ -111,7 +111,7 @@ export async function getVotingPower(proposal, address) {
       address,
       network,
       propsl.strategies,
-      propsl.snapshot,
+      parseInt(propsl.snapshot),
       space,
       delegation
     );
