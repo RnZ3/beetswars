@@ -1,19 +1,22 @@
 import { request } from "graphql-request";
-import { PROPOSAL_QUERY, VOTES_QUERY } from "hooks/queries";
+import { VP_QUERY, PROPOSAL_QUERY, VOTES_QUERY } from "hooks/queries";
 import lodash from "lodash";
 //import configData from "config.json";
 
 import snapshot from "@snapshot-labs/snapshot.js";
 
 const endpoint = "https://hub.snapshot.org/graphql";
+const network = "250";
+const space = "beets.eth";
+const delegation = false;
+const testaddress = "0xecA84a89bABE739FE38c421Cb867Ee0D682D119A";
 
 async function getProposal(id) {
   try {
     const response = await request(endpoint, PROPOSAL_QUERY, {
       id,
     });
-    const proposalResClone = lodash.cloneDeep(response);
-
+    const proposalResClone = await lodash.cloneDeep(response);
     return proposalResClone.proposal;
   } catch (e) {
     console.log(e);
@@ -93,7 +96,81 @@ export async function getResults(snapshotId) {
     sumOfResultsBalance: votingClass.getScoresTotal(),
   };
 
+  //console.log(proposal)
+
   return { proposal, votingResults };
+}
+
+export async function getVotingPower(proposal, address) {
+  console.log(proposal, address);
+  if (address && proposal !== "pending") {
+    const propsl: any = await getProposal(proposal);
+    console.log(propsl);
+    const votingPower = await getVpLocal(
+      //const votingPower = await snapshot.utils.getVp(
+      testaddress,
+      network,
+      propsl.strategies,
+      parseInt(propsl.snapshot),
+      space,
+      delegation
+    );
+    console.log(votingPower);
+    return votingPower.vp;
+  }
+}
+
+export async function getVotingPower2(proposal, address) {
+  if (address && proposal !== "pending") {
+    try {
+      const response = await request(endpoint, VP_QUERY, {
+        id: proposal,
+        voter: testaddress,
+        first: 1,
+      });
+      return response;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+}
+
+async function getVpLocal(
+  address: string,
+  network: string,
+  strategies: Strategy[],
+  snapshot: number | "latest",
+  space: string,
+  delegation: boolean,
+  options?: Options
+) {
+  if (!options) options = {};
+  if (!options.url) options.url = "https://score.snapshot.org";
+  const init = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "get_vp",
+      params: {
+        address,
+        network,
+        strategies,
+        snapshot,
+        space,
+        delegation,
+      },
+      id: null,
+    }),
+  };
+  const res = await fetch(options.url, init);
+  const json = await res.json();
+  if (json.error) return Promise.reject(json.error);
+  if (json.result) return json.result;
 }
 
 export default getProposal;

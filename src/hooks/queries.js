@@ -1,5 +1,22 @@
 import gql from "graphql-tag";
 
+export const VP_QUERY = gql`
+  query Votes(
+    $id: String!
+    $first: Int
+    $voter: String
+  ) {
+    votes(
+      first: $first
+      where: { 
+        proposal: $id, 
+        voter: $voter }
+    ) {
+      vp
+    }
+  }
+`;
+
 export const VOTES_QUERY = gql`
   query Votes(
     $id: String!
@@ -60,10 +77,9 @@ export const PROPOSAL_QUERY = gql`
 `;
 
 export const BPT_ACT_QUERY = gql`
-  query  Pool ( $id: String!) { 
-    poolGetPool(id:$id) {
-      dynamicData
-      {
+  query Pool($id: String!) {
+    poolGetPool(id: $id) {
+      dynamicData {
         totalLiquidity
         totalShares
       }

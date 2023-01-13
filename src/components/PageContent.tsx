@@ -14,6 +14,7 @@ import {
 import LabeledListItem from "components/LabeledListItem";
 import { useGetData } from "hooks/useGetData";
 import { useGetRounds } from "hooks/useGetRounds";
+import { useGetCharts } from "hooks/useGetCharts";
 import TimeFormatter from "utils/TimeFormatter";
 import { RoundList } from "types/Dashboard";
 import MyBackdrop from "components/MyBackdrop";
@@ -28,12 +29,14 @@ const PageContent: FC = () => {
     setShowChart,
     setGVersion,
     setGProposal,
+    gProposal,
+    votingPower,
   } = useGlobalContext();
-  const [tableCards, changeTableCards] = useState(true);
-  const [oldproposal, setOldproposal] = useState("nix");
 
-  const getRoundList: RoundList[] = useGetRounds();
+  const roundList: RoundList[] = useGetRounds();
+  const [tableCards, changeTableCards] = useState(true);
   const getData = useGetData(requestedRound);
+  const chartData = useGetCharts();
   var rows: GridRowsProp = [];
   var version: string = "";
   var voteStart: number = 0;
@@ -63,6 +66,12 @@ const PageContent: FC = () => {
   }
 
   useEffect(() => {
+    if (requestedRound === "latest" && getData.status === "loaded") {
+      console.log(roundList[0]);
+    }
+  }, [roundList]);
+
+  useEffect(() => {
     if (!voteActive && getData.status === "loaded") {
       setShowChart(true);
     }
@@ -71,29 +80,23 @@ const PageContent: FC = () => {
 
   const handleChange = (e: any) => {
     console.log(e.target.value);
+    setGProposal("pending");
     requestRound(e.target.value);
   };
-
-  useEffect(() => {
-    if (!oldproposal) {
-      setOldproposal("no old proposal");
-    } else {
-      setOldproposal(proposal);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestedRound]);
 
   useEffect(() => {
     setGVersion(version);
     setGProposal(proposal);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, proposal]);
+  }, [proposal, version]);
 
   return (
     <div>
+      {gProposal === "pending" && <MyBackdrop />}
       {getData.status === "loading" && (
         <Typography variant="h4" align="center">
           Loading....
+          <MyBackdrop />
         </Typography>
       )}
       {getData.status === "loaded" && (
@@ -152,7 +155,7 @@ const PageContent: FC = () => {
               >
                 <div style={{ marginRight: "9px" }}>
                   <select onChange={handleChange} value={requestedRound}>
-                    {getRoundList.map((bf: any, index: number) => (
+                    {roundList.map((bf: any, index: number) => (
                       <option key={index} value={bf}>
                         Round {bf}
                       </option>
@@ -237,7 +240,14 @@ const PageContent: FC = () => {
                                 align="center"
                                 sx={{ color: "#4BE39C" }}
                               >
-                                {"$" + (data.valuePerVote * 1000).toFixed(2)}
+                                {"$" + (1000 * data.valuePerVote).toFixed(2)}
+                                {votingPower?.round !== 0
+                                  ? " (" +
+                                    (
+                                      votingPower?.round * data.valuePerVote
+                                    ).toFixed(2) +
+                                    ")"
+                                  : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -363,7 +373,6 @@ const PageContent: FC = () => {
           )}
         </>
       )}
-      {proposal === oldproposal && <MyBackdrop />}
     </div>
   );
 };

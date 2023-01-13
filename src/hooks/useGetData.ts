@@ -7,20 +7,24 @@ import {
 } from "types/BribeData";
 import { ServiceType } from "types/Service";
 import { VoteDataType } from "types/VoteData";
-import { DashboardType, DashboardReturn } from "types/Dashboard";
+import { RoundList, DashboardType, DashboardReturn } from "types/Dashboard";
 import { getResults } from "hooks/voteSnapshot";
 import { request } from "graphql-request";
 import { BPT_ACT_QUERY } from "hooks/queries";
 import { contract_abi, contract_address } from "contracts/priceoracleconfig";
 import { ethers } from "ethers";
 import useTimer from "hooks/useTimer";
+import { useAccount } from "wagmi";
 
 //"https://beetswars-backend.cyclic.app/api/v1/bribedata/";
 export const baseUrl = "https://v2.beetswars.live/api/v1/bribedata"
 
 export const useGetData = (requestedRound: string) => {
   const dataUrl = baseUrl + "/" + requestedRound;
+  const { address, isConnecting, isDisconnected } = useAccount();
+  //  console.log(address, isConnecting, isDisconnected);
   const [voteActive, setActive] = useState(false);
+  const [roundListCache, setRoundListCache] = useState<RoundList[]>([]);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
   const refresh = useTimer(refreshInterval);
   const [dashboardResult, setDashboardResult] = useState<
@@ -55,6 +59,7 @@ export const useGetData = (requestedRound: string) => {
           : false
       );
 
+      const endTime2 = voteData.proposal.end;
       const endTime = new Date(voteData.proposal.end * 1000)
         .toLocaleDateString("de-DE")
         .replace(/\./g, "-");
@@ -156,14 +161,20 @@ export const useGetData = (requestedRound: string) => {
                     "/history?date=" +
                     endTime +
                     "&localization=false";
-                  await fetch(tknUrl || "")
+                  const tknUrl2 =
+                    "https://api.coingecko.com/api/v3/coins/beethoven-x/market_chart/range?vs_currency=usd&from=" +
+                    endTime2 +
+                    "&to=" +
+                    (endTime2 + 86400);
+                  await fetch(tknUrl2 || "")
                     .then((response) => {
                       return response.json();
                     })
                     .then((response) => {
+                      //console.log(response.prices[0][1])
                       const data: TokenPrice = {
                         token: tkn.token,
-                        price: response.market_data.current_price.usd,
+                        price: response.prices[0][1],
                       };
                       tokenPrices.push(data);
                     });

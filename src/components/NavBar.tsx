@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
+import { CustomConnectButton } from "components/CustomConnectButton";
 
 const NavBar: FC = () => {
   const { requestedRound, showChart, setShowChart, gProposal, gVersion } = useGlobalContext();
@@ -18,14 +19,23 @@ const NavBar: FC = () => {
       <Box
         sx={{
           padding: "2px",
+          paddingRight: "13px",
           display: "flex",
           justifyContent: "flex-end",
           background: "black",
           color: "white",
           textDecoration: "none",
-          paddingRight: "10px"
         }}
       >
+        <div style={{ marginRight: "9px", marginLeft: "9px" }}>
+          <button onClick={() => setShowChart(!showChart)}>
+            {showChart ? "Dashboard (" + gVersion + ")" : "Stats"}
+          </button>
+        </div>
+        <div style={{ marginRight: "9px", flexGrow: "1" }}>
+          <CustomConnectButton />
+        </div>
+
         <Typography variant="caption" align="right">
           <Link
             style={{ fontSize: "1rem" }}
@@ -73,22 +83,6 @@ const NavBar: FC = () => {
             </>
           )}
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          marginTop: "2px",
-          padding: "2px",
-          display: "flex",
-          justifyContent: "flex-end",
-          color: "white",
-          textDecoration: "none",
-        }}
-      >
-        <div style={{ marginRight: "9px" }}>
-          <button onClick={() => setShowChart(!showChart)}>
-            {showChart ? "Dashboard ("+gVersion+")" : "Stats"}
-          </button>
-        </div>
       </Box>
     </>
   );
