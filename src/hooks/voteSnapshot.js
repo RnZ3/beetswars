@@ -108,7 +108,7 @@ export async function getVotingPower(proposal, address) {
     console.log(propsl);
     const votingPower = await getVpLocal(
       //const votingPower = await snapshot.utils.getVp(
-      testaddress,
+      address,
       network,
       propsl.strategies,
       parseInt(propsl.snapshot),
@@ -125,7 +125,7 @@ export async function getVotingPower2(proposal, address) {
     try {
       const response = await request(endpoint, VP_QUERY, {
         id: proposal,
-        voter: testaddress,
+        voter: address,
         first: 1,
       });
       return response;
