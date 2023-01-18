@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { getVotingPower, getVotingPower2 } from "hooks/voteSnapshot";
-import { abbreviateNumber } from "utils/vpDisplayFormat";
+//import { abbreviateNumber } from "utils/vpDisplayFormat";
 
 export const CustomConnectButton = () => {
   const { gProposal, votingPower, setVotingPower } = useGlobalContext();
@@ -37,6 +37,7 @@ export const CustomConnectButton = () => {
   useEffect(() => {
     console.log("get VP");
     getVp();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address, gProposal]);
 
   return (

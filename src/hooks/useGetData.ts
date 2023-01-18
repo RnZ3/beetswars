@@ -24,7 +24,7 @@ export const useGetData = (requestedRound: string) => {
   const { address, isConnecting, isDisconnected } = useAccount();
   //  console.log(address, isConnecting, isDisconnected);
   const [voteActive, setActive] = useState(false);
-  const [roundListCache, setRoundListCache] = useState<RoundList[]>([]);
+//  const [roundListCache, setRoundListCache] = useState<RoundList[]>([]);
   const refreshInterval: number | null = voteActive ? 60000 : null; // ms or null
   const refresh = useTimer(refreshInterval);
   const [dashboardResult, setDashboardResult] = useState<

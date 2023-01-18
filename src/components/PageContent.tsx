@@ -69,6 +69,7 @@ const PageContent: FC = () => {
     if (requestedRound === "latest" && getData.status === "loaded") {
       console.log(roundList[0]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundList]);
 
   useEffect(() => {

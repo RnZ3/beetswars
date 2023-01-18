@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+//import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { useGlobalContext } from "contexts/GlobalContext";
 import { CustomConnectButton } from "components/CustomConnectButton";

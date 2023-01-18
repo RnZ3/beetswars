@@ -1,10 +1,10 @@
 import { Chain, configureChains, createClient } from 'wagmi'
 
 
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+//import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+//import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import { publicProvider } from 'wagmi/providers/public'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit';
