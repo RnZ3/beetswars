@@ -23,7 +23,7 @@ const Chart1 = React.memo(() => {
     return "Round " + parseFloat(round.round).toFixed(0);
   });
   const bribersRoi = chartData?.chartdata.map((round) => {
-    return round.bribersRoi.toLocaleString("en-US", {
+    return round.bribersRoi === 0 ? "NaN" : round.bribersRoi.toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -75,7 +75,7 @@ const Chart1 = React.memo(() => {
     color: [
       "magenta",
       "cyan",
-      "coral",
+      "cornflowerblue",
       "orange",
       "red",
       "white",
@@ -295,10 +295,10 @@ const Chart1 = React.memo(() => {
       },
       {
         name: "Bribers Roi %",
-        nameTextStyle: { color: "coral", fontSize: "0.9em" },
+        nameTextStyle: { color: "cornflowerblue", fontSize: "0.9em" },
         type: "value",
         splitLine: { lineStyle: { type: "dotted", color: "#555555" } },
-        axisLabel: { color: "coral", align: "left" },
+        axisLabel: { color: "cornflowerblue", align: "left" },
         gridIndex: 0,
         position: "right",
         nameLocation: "start",
@@ -412,7 +412,7 @@ const Chart1 = React.memo(() => {
         smooth: "true",
         stack: "",
         areaStyle: { opacity: opacity },
-        lineStyle: { color: "coral", width: linewidth },
+        lineStyle: { color: "cornflowerblue", width: linewidth },
         data: bribersRoi,
         xAxisIndex: 2,
         yAxisIndex: 2,
